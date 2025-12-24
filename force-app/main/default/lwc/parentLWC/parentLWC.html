@@ -1,0 +1,18 @@
+<template>
+    <lightning-layout-item
+    size="12"
+    small-device-size="12"
+    medium-device-size="12"
+    large-device-size="3"
+    class="slds-p-horizontal_xx-small slds-p-vertical_xxx-small">
+        <c-custom-lookup
+            label="Contas"
+            placeholder="Pesquisar contas..."
+            s-object-api-name="Account"
+            icon-name="standard:account"
+            default-record-id={_resource.name}
+            onlookupupdate={handleUpdate}
+            required="false"
+        ></c-custom-lookup>
+    </lightning-layout-item>
+</template>

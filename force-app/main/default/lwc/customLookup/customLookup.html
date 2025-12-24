@@ -1,0 +1,107 @@
+<template>
+    <div
+        class={formElementClass}
+        data-source="lookupContainer"
+        onmouseleave={toggleResult}>
+        <div class="slds-combobox_container slds-has-selection">
+            <label class="slds-form-element__label">
+                <template lwc:if={isRequired}>
+                    <abbr class="slds-required" title="Obrigatório">*</abbr>
+                </template>
+                {label}
+            </label>
+
+            <div
+                class="lookupInputContainer slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click"
+                role="combobox">
+                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left-right">
+
+                    <!-- INPUT -->
+                    <div class="searchBoxWrapper slds-show">
+                        <lightning-input
+                            type="search"
+                            data-source="searchInputField"
+                            onclick={toggleResult}
+                            onchange={handleKeyChange}
+                            is-loading={isSearchLoading}
+                            value={searchKey}
+                            variant="label-hidden"
+                            placeholder={placeholder}
+                            disabled={isDisabled}
+                        ></lightning-input>
+                    </div>
+
+                    <!-- PILL -->
+                    <div class="pillDiv slds-hide">
+                        <span class="slds-icon_container slds-combobox__input-entity-icon">
+                            <lightning-icon
+                                icon-name={iconName}
+                                size="x-small"
+                            ></lightning-icon>
+                        </span>
+
+                        <input
+                            type="text"
+                            value={selectedRecord.Name}
+                            class="slds-input slds-combobox__input slds-combobox__input-value"
+                            readonly/>
+
+                        <template lwc:if={isDisabled}></template>
+                        <template lwc:else>
+                            <button
+                                class="slds-button slds-button_icon slds-input__icon slds-input__icon_right"
+                                title="Remover"
+                                onclick={handleRemove}>
+                                <lightning-icon
+                                    icon-name="utility:close"
+                                    size="x-small"
+                                ></lightning-icon>
+                            </button>
+                        </template>
+                    </div>
+                </div>
+                <!-- RESULT LIST -->
+                <div class="slds-dropdown slds-dropdown_fluid" role="listbox">
+                    <ul class="slds-listbox slds-listbox_vertical">
+                        <template for:each={lstResult} for:item="obj">
+                            <li key={obj.Id} class="slds-listbox__item">
+                                <div
+                                    data-recid={obj.Id}
+                                    onclick={handelSelectedRecord}
+                                    class={mediaClass}
+                                    role="option">
+                                    <span class="slds-media__figure">
+                                        <lightning-icon
+                                            icon-name={iconName}
+                                            size="small"
+                                        ></lightning-icon>
+                                    </span>
+                                    <span class="slds-media__body">
+                                        <span class="slds-listbox__option-text">
+                                            {obj.Name}
+                                        </span>
+                                        <template lwc:if={hasMeta}>
+                                            <span class="slds-listbox__option-meta">
+                                                {obj.meta}
+                                            </span>
+                                        </template>
+                                    </span>
+                                </div>
+                            </li>
+                        </template>
+                        <template if:false={hasRecords}>
+                            <li class="slds-listbox__item slds-text-align_center">
+                                Nenhum Registro Encontrado...
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <template lwc:if={isNotValid}>
+            <div class="slds-form-element__help slds-has-error">
+                Preencha esse campo.
+            </div>
+        </template>
+    </div>
+</template>
